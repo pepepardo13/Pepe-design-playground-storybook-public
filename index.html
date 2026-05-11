@@ -107,10 +107,6 @@
   color: #191919 !important;
 }
 
-[class*="_header_"] img[alt="Envato"] {
-  filter: brightness(0) !important;
-}
-
 [class*="_searchBar_"] {
   background: #fff !important;
   border: 1px solid #ccc !important;
@@ -129,7 +125,17 @@
 }
 
 [class*="_bottomBar_"] {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12) !important;
+  border-bottom: 0 !important;
+  justify-content: center !important;
+  height: 64px !important;
+  padding: 4px 16px 8px !important;
+}
+
+[class*="_bottomBar_"] [class*="_searchBar_"] {
+  width: 100% !important;
+  max-width: 1100px !important;
+  min-width: 0 !important;
+  flex: 0 1 1100px !important;
 }
 
 [class*="_bottomNavItem_"],
@@ -142,7 +148,39 @@
   color: #1a4200 !important;
 }
 
-/* Hamburger button (mobile only) — appended into the topBar actions */
+[class*="_topBarLeft_"] [class*="_bottomNav_"] {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  align-items: center !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+[class*="_topBarLeft_"] [class*="_bottomNavItem_"] {
+  height: 56px !important;
+  padding: 0 8px !important;
+}
+
+/* Account icon button (always visible) */
+.__proto-account {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #191919;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+.__proto-account svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Hamburger button (mobile only) */
 .__proto-hamburger {
   display: none;
   width: 40px;
@@ -162,13 +200,10 @@
 }
 
 @media (max-width: 720px) {
-  /* Hide the desktop categories, search, and right-side links so the hamburger replaces them */
-  [class*="_bottomNav_"],
-  [class*="_bottomBarDivider_"],
-  [class*="_bottomBar_"] [class*="_bottomNavItem_"],
+  /* Hide categories (now in topBarLeft), top-bar links, CTA, and search row on mobile */
+  [class*="_topBarLeft_"] [class*="_bottomNav_"],
   [class*="_topBarActions_"] [class*="_headerLink_"],
-  [class*="_topBarActions_"] [class*="_headerCta_"],
-  [class*="_topBarLeft_"] [class*="_searchBar_"] {
+  [class*="_topBarActions_"] [class*="_headerCta_"] {
     display: none !important;
   }
 
@@ -188,25 +223,112 @@
 </style>
 <script>
 (function () {
-  if (window.__protoHamburgerInstalled) return;
-  window.__protoHamburgerInstalled = true;
+  if (window.__protoNavThemeInstalled) return;
+  window.__protoNavThemeInstalled = true;
 
-  function ensureHamburger() {
-    var actions = document.querySelector('[class*="_topBarActions_"]');
-    if (!actions) return false;
-    if (actions.querySelector(".__proto-hamburger")) return true;
+  var ENVATO_LOGO_DATA_URI =
+    "data:image/svg+xml;base64," +
+    "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTG9nbyIgd2lkdGg9IjEwNSIgaGVpZ2h0PSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMjgwLjI4IDY0Ij4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLmNscy0xIHsKICAgICAgICBmaWxsOiAjMTkxOTE5OwogICAgICB9CgogICAgICAuY2xzLTEsIC5jbHMtMiB7CiAgICAgICAgc3Ryb2tlLXdpZHRoOiAwcHg7CiAgICAgIH0KCiAgICAgIC5jbHMtMiB7CiAgICAgICAgZmlsbDogIzg3ZTY0YjsKICAgICAgfQogICAgPC9zdHlsZT4KICA8L2RlZnM+CiAgPGc+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik03Ni4zNCwxMi41MmM5LjU5LDAsMTguOTcsNS42NSwxOC45NywxOC4yNSwwLDEtLjA1LDIuNTUtLjE2LDMuNjQtLjAzLjI1LS4yNC40NC0uNDkuNDRoLTI2LjljLjc5LDQuNTEsMy45NCw3LjQ0LDguODgsNy40NCwzLjI4LDAsNS4zNy0xLjgxLDYuNS0zLjk3LjE0LS4yNy40NS0uNDEuNzUtLjM1bDEwLjA2LDIuMTljLjMxLjA3LjQ3LjQuMzQuNjktMi4zNSw1LjMzLTcuNywxMC42MS0xNy43MywxMC42MS0xMy4xNywwLTIwLjE5LTguNTktMjAuMTktMTkuNDdzNy4zLTE5LjQ3LDE5Ljk3LTE5LjQ3Wk04NC4wNywyNy45OGMtLjUtNC4yOS0zLjM2LTYuNTktNy41Mi02LjU5LTUuNDQsMC03LjczLDIuNzktOC41OSw2LjU5aDE2LjExWiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNOTguNzUsNDkuODJWMTQuMTZjMC0uMjcuMjItLjQ5LjQ5LS40OWgxMC40N2MuMjcsMCwuNDkuMjIuNDkuNDl2NC4yM2MyLjUxLTMuOTQsNi4yMy01Ljg3LDExLjAyLTUuODcsNy4wMSwwLDEzLjAzLDQuOCwxMy4wMywxNS41M3YyMS43N2MwLC4yNy0uMjIuNDktLjQ5LjQ5aC0xMC40N2MtLjI3LDAtLjQ5LS4yMi0uNDktLjQ5di0yMC4xMmMwLTQuOC0yLjUxLTcuNDQtNi4xNi03LjQ0LTMuOTQsMC02LjQ0LDIuNTgtNi40NCw4LjQ1djE5LjEyYzAsLjI3LS4yMi40OS0uNDkuNDloLTEwLjQ3Yy0uMjcsMC0uNDktLjIyLS40OS0uNDlaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xMzQuOTUsMTMuNjZoMTEuMWMuMjIsMCwuNDEuMTQuNDcuMzVsOC4zNCwyNy42NCw4LjM0LTI3LjY0Yy4wNi0uMjEuMjUtLjM1LjQ3LS4zNWgxMS4xYy4zNCwwLC41OC4zNC40Ni42NmwtMTIuNzcsMzUuNTNjLS4xLjI3LS4zNi40Ni0uNjUuNDZoLTEzLjkyYy0uMjksMC0uNTUtLjE4LS42NS0uNDZsLTEyLjc3LTM1LjUzYy0uMTItLjMyLjEyLS42Ni40Ni0uNjZaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xOTkuNTMsNDkuODJ2LTUuNTljLTEuNzksMy43Mi01LjgsNy4yMy0xMi4wMyw3LjIzLTcuMjMsMC0xMi42LTQuNTgtMTIuNi0xMS4wMiwwLTYuOCw0LjUxLTExLjg4LDE0LjM5LTExLjg4aDUuNzNjMy4xNSwwLDQuMDEtMi4yOSwzLjcyLTMuNzktLjQzLTIuNTgtMi43Mi0zLjk0LTUuOTQtMy45NC00LjA3LDAtNi41MywyLjI1LTYuODQsNS4zNC0uMDMuMjgtLjI5LjQ4LS41Ny40NGwtOS43MS0xLjYyYy0uMjctLjA0LS40Ni0uMy0uNDEtLjU3LDEuNTgtOC40NSw5LjU5LTExLjg5LDE3LjgxLTExLjg5czE3LjMyLDIsMTcuMzIsMTcuMTh2MjAuMTJjMCwuMjctLjIyLjQ5LS40OS40OWgtOS45Yy0uMjcsMC0uNDktLjIyLS40OS0uNDlaTTE5MC44Nyw0My4xNmM0LjU4LDAsNy43My0zLjQ0LDguMDktNy43M2gtNi45NGMtNC4yMiwwLTUuNzMsMS43Mi01LjY1LDQuMDguMDcsMi41MSwyLjA4LDMuNjUsNC41MSwzLjY1WiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMjEyLjEzLDIyLjMzdi04LjE4YzAtLjI3LjIyLS40OS40OS0uNDloNC4wOWMxLjksMCwzLjQ0LTEuNTQsMy40NC0zLjQ0VjMuODVjMC0uMjcuMjItLjQ5LjQ5LS40OWg5LjMyYy4yNywwLC40OS4yMi40OS40OXY5LjgxaDcuNTJjLjI3LDAsLjQ5LjIyLjQ5LjQ5djguMThjMCwuMjctLjIyLjQ5LS40OS40OWgtNy41MnYxMy4yNGMwLDQuMzEsMy42Nyw2LjA3LDcuNSw0LjcxLjI1LS4wOS41Mi4xLjUyLjM3djguNjNjMCwuMzItLjIxLjYtLjUyLjY3LS45OS4yMy0yLjM2LjQ0LTMuOTkuNDQtOC44OCwwLTE0Ljk2LTMuMDEtMTQuOTYtMTUuODl2LTEyLjE3aC02LjM4Yy0uMjcsMC0uNDktLjIyLS40OS0uNDlaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0yODAuMjgsMzEuOTljMCwxMC43NC03LjU5LDE5LjQ3LTIwLjA0LDE5LjQ3cy0yMC4wNC04LjczLTIwLjA0LTE5LjQ3LDcuNTktMTkuNDcsMjAuMDQtMTkuNDcsMjAuMDQsOC43MywyMC4wNCwxOS40N1pNMjY4LjgyLDMxLjk5YzAtNS4zLTIuOTMtOS43My04LjU5LTkuNzNzLTguNTksNC40NC04LjU5LDkuNzMsMi45Myw5LjczLDguNTksOS43Myw4LjU5LTQuNDQsOC41OS05LjczWiIvPgogIDwvZz4KICA8Zz4KICAgIDxjaXJjbGUgY2xhc3M9ImNscy0yIiBjeD0iMjUuNTYiIGN5PSI2MS4xNCIgcj0iMi44NiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0yIiBkPSJNNDIsNDEuNjRsLTE2LjEzLDEuNzNjLS4zLjAzLS40NS0uMzQtLjIxLS41M2wxNS43OC0xMi4yOWMxLjAyLS44NCwxLjY4LTIuMTQsMS40LTMuNTQtLjI4LTIuMTQtMi4wNS0zLjU0LTQuMjktMy4yNmwtMTcuMTUsMi41MWMtLjMuMDQtLjQ2LS4zNC0uMjItLjUzbDE3LTEyLjk4YzMuMzUtMi42MSwzLjYzLTcuNzMuNTYtMTAuNzEtMi43OS0yLjc5LTcuMjctMi43LTEwLjA2LjA5TDEuMjksMzBjLTEuMDIsMS4xMi0xLjQ5LDIuNjEtMS4yMSw0LjE5LjQ3LDIuNTIsMi45OCw0LjE5LDUuNSwzLjczbDE0Ljc3LTMuMDFjLjMyLS4wNy40OS4zNi4yMi41NGwtMTYuMzgsMTAuNDljLTIuMDUsMS4zLTIuOTgsMy42My0yLjMzLDUuOTYuNjUsMy4wNywzLjczLDQuODQsNi43MSw0LjFsMjQuNDktNi4wM2MuMjgtLjA3LjQ4LjI1LjMuNDdsLTMuODIsNC43MmMtMS4wMiwxLjMuNjUsMy4wNywyLjA1LDIuMDVsMTIuNTgtMTAuMzRjMi4yNC0xLjg2Ljc1LTUuNS0yLjE0LTUuMjJaIi8+CiAgPC9nPgo8L3N2Zz4=";
 
-    var btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "__proto-hamburger";
-    btn.setAttribute("aria-label", "Open navigation");
-    btn.innerHTML = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>';
-    actions.appendChild(btn);
+  var HAMBURGER_SVG =
+    '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+    '<path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>';
+
+  var ACCOUNT_SVG =
+    '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+    '<circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.5" />' +
+    '<path d="M4 20c0-3.314 3.582-6 8-6s8 2.686 8 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /></svg>';
+
+  function isAlreadyRewritten(header, bottomBar, searchBar) {
+    return bottomBar.contains(searchBar) && !bottomBar.querySelector('[class*="_bottomNav_"]');
+  }
+
+  function rewriteHeader() {
+    var header = document.querySelector('[class*="_header_"]');
+    if (!header) return false;
+
+    var topBar = header.querySelector('[class*="_topBar_"]');
+    var topBarLeft = header.querySelector('[class*="_topBarLeft_"]');
+    var topBarActions = header.querySelector('[class*="_topBarActions_"]');
+    var bottomBar = header.querySelector('[class*="_bottomBar_"]');
+    var bottomNav = header.querySelector('[class*="_bottomNav_"]');
+    var searchBar = header.querySelector('[class*="_searchBar_"]');
+    var brandImg = header.querySelector('img[alt="Envato"]');
+
+    if (
+      !topBar ||
+      !topBarLeft ||
+      !topBarActions ||
+      !bottomBar ||
+      !bottomNav ||
+      !searchBar ||
+      !brandImg
+    ) {
+      return false;
+    }
+
+    if (isAlreadyRewritten(header, bottomBar, searchBar)) {
+      ensureExtraButtons(topBarActions);
+      return true;
+    }
+
+    // Move the Learn link (sibling of bottomNav inside bottomBar) into bottomNav so categories stay together
+    var bottomBarKids = Array.prototype.slice.call(bottomBar.children);
+    for (var i = 0; i < bottomBarKids.length; i++) {
+      var kid = bottomBarKids[i];
+      if (kid !== bottomNav && kid.tagName === "A") {
+        bottomNav.appendChild(kid);
+      }
+    }
+
+    // Swap brand image to the green-leaf SVG
+    brandImg.src = ENVATO_LOGO_DATA_URI;
+    brandImg.style.filter = "none";
+    brandImg.style.width = "105px";
+    brandImg.style.height = "24px";
+
+    // Move bottomNav (categories + Learn) into topBarLeft, after brand
+    topBarLeft.appendChild(bottomNav);
+
+    // Clear bottomBar's remaining children (bottomBarDivider, etc.) and move searchBar into it
+    while (bottomBar.firstChild) bottomBar.removeChild(bottomBar.firstChild);
+    bottomBar.appendChild(searchBar);
+
+    // Hide "Sign In" link from topBarActions (replaced by account icon)
+    var topActionLinks = topBarActions.querySelectorAll('[class*="_headerLink_"]');
+    for (var j = 0; j < topActionLinks.length; j++) {
+      var link = topActionLinks[j];
+      if ((link.textContent || "").trim().toLowerCase() === "sign in") {
+        link.style.display = "none";
+      }
+    }
+
+    ensureExtraButtons(topBarActions);
     return true;
   }
 
+  function ensureExtraButtons(topBarActions) {
+    if (!topBarActions.querySelector(".__proto-account")) {
+      var account = document.createElement("button");
+      account.type = "button";
+      account.className = "__proto-account";
+      account.setAttribute("aria-label", "Account");
+      account.innerHTML = ACCOUNT_SVG;
+      topBarActions.appendChild(account);
+    }
+
+    if (!topBarActions.querySelector(".__proto-hamburger")) {
+      var burger = document.createElement("button");
+      burger.type = "button";
+      burger.className = "__proto-hamburger";
+      burger.setAttribute("aria-label", "Open navigation");
+      burger.innerHTML = HAMBURGER_SVG;
+      topBarActions.appendChild(burger);
+    }
+  }
+
   function poll() {
-    if (ensureHamburger()) return;
+    if (rewriteHeader()) return;
     setTimeout(poll, 200);
   }
 
@@ -217,7 +339,7 @@
   }
 
   var observer = new MutationObserver(function () {
-    ensureHamburger();
+    rewriteHeader();
   });
   observer.observe(document.body || document.documentElement, {
     childList: true,
