@@ -58,6 +58,28 @@
 })();
 </script>
 <!-- /__proto-gate-marker -->
+<!-- __proto-shortcut-marker -->
+<script>
+(function () {
+  var HUB = "https://pepepardo13.github.io/Pepe-design-playground/iframe.html?id=prototype-experiment-hub--default&viewMode=story";
+  function isTyping(el) {
+    if (!el || el.nodeType !== 1) return false;
+    var t = el.tagName;
+    return t === "INPUT" || t === "TEXTAREA" || el.isContentEditable;
+  }
+  document.addEventListener("keydown", function (e) {
+    if (e.isComposing || e.repeat || e.defaultPrevented) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key;
+    if (k !== "Escape" && k !== "Esc" && k !== "r" && k !== "R") return;
+    if (isTyping(e.target)) return;
+    e.preventDefault();
+    e.stopPropagation();
+    (window.top || window).location.href = HUB;
+  }, true);
+})();
+</script>
+<!-- /__proto-shortcut-marker -->
 
     <meta charset="utf-8" />
 
