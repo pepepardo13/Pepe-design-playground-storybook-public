@@ -86,16 +86,29 @@
 @media (max-width: 720px) {
   [class*="modeToggle_"] {
     flex-wrap: nowrap !important;
-    width: auto !important;
+    width: 100% !important;
     max-width: 100% !important;
   }
   [class*="modeToggleButton"] {
+    flex: 1 1 0 !important;
     width: auto !important;
     min-width: 0 !important;
     min-height: 40px !important;
     padding: 6px 10px !important;
     font-size: 14px !important;
     white-space: nowrap !important;
+  }
+}
+@media (max-width: 400px) {
+  [class*="modeToggleButton"] {
+    gap: 4px !important;
+    padding: 6px 8px !important;
+    font-size: 12px !important;
+  }
+  [class*="modeToggleButton"] svg,
+  [class*="modeToggleButton"] img {
+    width: 16px !important;
+    height: 16px !important;
   }
 }
 </style>
