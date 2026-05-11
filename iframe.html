@@ -81,6 +81,25 @@
 })();
 </script>
 <!-- /__proto-shortcut-marker -->
+<!-- __proto-toggle-fix-marker -->
+<style>
+@media (max-width: 720px) {
+  [class*="modeToggle_"] {
+    flex-wrap: nowrap !important;
+    width: auto !important;
+    max-width: 100% !important;
+  }
+  [class*="modeToggleButton"] {
+    width: auto !important;
+    min-width: 0 !important;
+    min-height: 40px !important;
+    padding: 6px 10px !important;
+    font-size: 14px !important;
+    white-space: nowrap !important;
+  }
+}
+</style>
+<!-- /__proto-toggle-fix-marker -->
 <script type="module" src="/vite-inject-mocker-entry.js"></script>
     <meta charset="utf-8" />
     <title>Storybook</title>
