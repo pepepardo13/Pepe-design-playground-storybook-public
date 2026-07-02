@@ -41,7 +41,7 @@
     var form = wrap.querySelector("#__proto-gate-form");
     form.addEventListener("submit", function (e) {
       e.preventDefault();
-      if (input.value === "envatocam2026") {
+      if (input.value.trim().toUpperCase() === "CAM2026") {
         try { sessionStorage.setItem("prototype-gate", "unlocked"); } catch (e2) {}
         location.reload();
       } else {
