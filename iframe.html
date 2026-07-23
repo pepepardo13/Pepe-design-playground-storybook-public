@@ -1,7 +1,65 @@
 <!doctype html>
 <!--suppress HtmlUnknownTarget -->
 <html lang="en">
-  <head><script type="module" src="/vite-inject-mocker-entry.js"></script>
+  <head>
+<!-- __proto-gate-marker -->
+<script>
+(function () {
+  try {
+    if (sessionStorage.getItem("prototype-gate") === "unlocked") return;
+  } catch (e) {}
+
+  var hideStyle = document.createElement("style");
+  hideStyle.textContent =
+    'html.__proto-gated body > :not(#__proto-gate){display:none!important}' +
+    'html.__proto-gated{background:#191919}';
+  if (document.head) document.head.appendChild(hideStyle);
+  else document.addEventListener("DOMContentLoaded", function () { document.head.appendChild(hideStyle); });
+  document.documentElement.classList.add("__proto-gated");
+
+  function build() {
+    if (document.getElementById("__proto-gate")) return;
+    var wrap = document.createElement("div");
+    wrap.id = "__proto-gate";
+    wrap.setAttribute(
+      "style",
+      "position:fixed;inset:0;background:#191919;color:#fff;font-family:'Nunito Sans',system-ui,-apple-system,sans-serif;display:flex;align-items:center;justify-content:center;z-index:2147483647;padding:16px;"
+    );
+    wrap.innerHTML =
+      '<div style="background:#202020;border-radius:28px;padding:40px;width:100%;max-width:440px;box-sizing:border-box;">' +
+        '<h1 style="margin:0 0 8px;font-size:28px;font-weight:700;letter-spacing:-0.02em;">Prototype access</h1>' +
+        '<p style="margin:0 0 24px;font-size:15px;line-height:1.5;color:rgba(255,255,255,0.7);">Enter the password to view the Envato pricing prototypes.</p>' +
+        '<form id="__proto-gate-form" novalidate>' +
+          '<label for="__proto-gate-input" style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">Password</label>' +
+          '<input id="__proto-gate-input" type="password" autocomplete="current-password" placeholder="Enter password" style="display:block;width:100%;padding:12px 14px;font-size:15px;border-radius:12px;border:1px solid rgba(255,255,255,0.15);background:#161616;color:#fff;box-sizing:border-box;outline:none;" />' +
+          '<div id="__proto-gate-error" style="display:none;margin-top:10px;color:#ff7a7a;font-size:13px;">Incorrect password. Please try again.</div>' +
+          '<button type="submit" style="margin-top:20px;width:100%;padding:12px 14px;font-size:15px;font-weight:600;border:0;border-radius:12px;background:#fff;color:#000;cursor:pointer;">Unlock</button>' +
+        '</form>' +
+      '</div>';
+    document.body.appendChild(wrap);
+    var input = wrap.querySelector("#__proto-gate-input");
+    var err = wrap.querySelector("#__proto-gate-error");
+    var form = wrap.querySelector("#__proto-gate-form");
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (input.value.trim().toUpperCase() === "CAM2026") {
+        try { sessionStorage.setItem("prototype-gate", "unlocked"); } catch (e2) {}
+        location.reload();
+      } else {
+        err.style.display = "block";
+        input.focus();
+        input.select();
+      }
+    });
+    input.focus();
+  }
+
+  if (document.body) build();
+  else document.addEventListener("DOMContentLoaded", build);
+})();
+</script>
+<!-- /__proto-gate-marker -->
+<script type="module" src="/vite-inject-mocker-entry.js"></script>
     <meta charset="utf-8" />
     <title>Storybook</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -547,9 +605,9 @@
   }
 </script>
 
-    <script type="module" crossorigin src="/Pepe-design-playground-storybook-public/assets/iframe-s9ifEiZ7.js"></script>
-    <link rel="modulepreload" crossorigin href="/Pepe-design-playground-storybook-public/assets/preload-helper-ClkjSumv.js">
-    <link rel="stylesheet" crossorigin href="/Pepe-design-playground-storybook-public/assets/iframe-DxcNgws5.css">
+    <script type="module" crossorigin src="./assets/iframe-BbEWd9Ed.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/preload-helper-PPVm8Dsz.js">
+    <link rel="stylesheet" crossorigin href="./assets/iframe-Cyc_-oar.css">
   </head>
 
   <body>
