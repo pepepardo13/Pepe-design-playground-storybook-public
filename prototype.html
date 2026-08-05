@@ -135,8 +135,9 @@
     <script>
       (function () {
         // Client-side gate only — deters casual access to this prototype share,
-        // it is not real security. Password is normalised (trim + lowercase).
-        var PASSWORD = "cam 2026";
+        // it is not real security. Input is normalised (all whitespace removed +
+        // lowercased) so "CAM2026", "CAM 2026", "cam 2026" all unlock.
+        var PASSWORD = "cam2026";
         var STORY = "prototype-pricing-page-2-0--default";
         var STORY_URL = "iframe.html?id=" + STORY + "&viewMode=story";
         var KEY = "envato-proto-gate";
@@ -165,7 +166,7 @@
 
         form.addEventListener("submit", function (e) {
           e.preventDefault();
-          var value = (input.value || "").trim().toLowerCase();
+          var value = (input.value || "").replace(/\s+/g, "").toLowerCase();
           if (value === PASSWORD) {
             try { sessionStorage.setItem(KEY, "1"); } catch (e) {}
             err.textContent = "";
